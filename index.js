@@ -1,14 +1,13 @@
 const defineModule = (name, obj) => {
-  const promise = (() => new Promise((resolve, reject) => {
-      if (obj) {
-        setTimeout(() => {
-          resolve(obj);
-        }, 0); // добавляем в мультиплексор на 0 секунд, а после в очередь
-      } else {
-        throw new Error('empty props');
-      }
-    })
-  )();
+  const promise = new Promise((resolve, reject) => {
+    if (obj) {
+      setTimeout(() => {
+        resolve(obj);
+      }, 0); // добавляем в мультиплексор на 0 секунд, а после в очередь
+    } else {
+      throw new Error('empty props');
+    }
+  });
 
   if (global.modules) {
     global.modules[name] = promise;
@@ -49,4 +48,4 @@ requireModule('calc').then(calc => {
   console.log(`${calc.div(40, 2)} - result 2`);
 })();
 
-console.log('1 - test'); // попадает в стек первым
+console.log('1 - test'); // попадает в стек первым, всм из всех console.log'ов
